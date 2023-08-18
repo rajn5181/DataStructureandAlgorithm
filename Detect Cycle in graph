@@ -1,0 +1,30 @@
+from collections import deque, defaultdict
+
+def cycleDetection(edges, n, m):
+    def bfs(curr, visited, dic):
+        parent = defaultdict()
+        parent[curr] = -1
+        visited[curr] = True
+        que = deque()
+        que.append(curr)
+        while que:
+            node = que.popleft()
+            for n in dic[node]:
+                if visited[n] and parent[node] != n:
+                    return True
+                elif not visited[n]:
+                    que.append(n)
+                    visited[n] = True
+                    parent[n] = node
+        return False
+
+    dic = defaultdict(list)
+    for i in range(len(edges)):
+        dic[edges[i][0]].append(edges[i][1])
+        dic[edges[i][1]].append(edges[i][0])
+
+    visited = defaultdict(bool)  # Initialize visited with default value False
+    for i in range(n):
+        if not visited[i] and bfs(i, visited, dic):
+            return "Yes"
+    return "No"
