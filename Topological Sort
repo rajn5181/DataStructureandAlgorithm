@@ -1,0 +1,23 @@
+
+#Topological Algorithm in Python
+from collections import defaultdict
+
+def topologicalSort(adj, v, e):
+    stack = []
+    
+    def dfs(dic, visited, curr):
+        visited[curr] = True
+        for node in dic[curr]:
+            if not visited[node]:
+                dfs(dic, visited, node)
+        stack.append(curr)
+    
+    dic = defaultdict(list)
+    for i in range(len(adj)):
+        dic[adj[i][0]].append(adj[i][1])
+   
+    visited = [False] * v
+    for curr in range(v):
+        if not visited[curr]:
+            dfs(dic, visited, curr)
+    return stack[::-1]
